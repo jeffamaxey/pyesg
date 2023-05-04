@@ -23,42 +23,43 @@ def load_academy_sample_scenario() -> Dict[str, Any]:
     -------
     scenario : Dict[str, Any], a dictionary with parameter inputs and outputs
     """
-    output: Dict[str, Any] = {}
-    output["process_parameters"] = dict(
-        beta1=0.00509,
-        beta2=0.02685,
-        beta3=0.04001,
-        rho12=-0.19197,
-        rho13=0.0,
-        rho23=0.0,
-        sigma2=0.04148,
-        sigma3=0.11489,
-        tau1=0.035,
-        tau2=0.01,
-        tau3=0.0287,
-        theta=1.0,
-        phi=0.0002,
-        psi=0.25164,
-        long_rate_max=0.18,
-        long_rate_min=0.0115,
-    )
-    output["yield_curve"] = pd.Series(
-        index=[0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
-        data=[
-            0.0155,
-            0.0160,
-            0.0159,
-            0.0158,
-            0.0162,
-            0.0169,
-            0.0183,
-            0.0192,
-            0.0225,
-            0.0239,
-        ],
-        name="yield_curve",
-    )
-    output["volatility"] = 0.0287
+    output: Dict[str, Any] = {
+        "process_parameters": dict(
+            beta1=0.00509,
+            beta2=0.02685,
+            beta3=0.04001,
+            rho12=-0.19197,
+            rho13=0.0,
+            rho23=0.0,
+            sigma2=0.04148,
+            sigma3=0.11489,
+            tau1=0.035,
+            tau2=0.01,
+            tau3=0.0287,
+            theta=1.0,
+            phi=0.0002,
+            psi=0.25164,
+            long_rate_max=0.18,
+            long_rate_min=0.0115,
+        ),
+        "yield_curve": pd.Series(
+            index=[0.25, 0.5, 1, 2, 3, 5, 7, 10, 20, 30],
+            data=[
+                0.0155,
+                0.0160,
+                0.0159,
+                0.0158,
+                0.0162,
+                0.0169,
+                0.0183,
+                0.0192,
+                0.0225,
+                0.0239,
+            ],
+            name="yield_curve",
+        ),
+        "volatility": 0.0287,
+    }
     output["long_rate"] = output["yield_curve"].loc[20]
     output["spread"] = output["yield_curve"].loc[20] - output["yield_curve"].loc[1]
     output["dt"] = 1 / 12

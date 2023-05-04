@@ -142,17 +142,16 @@ class StochasticProcess(ABC):
         rvs = self.dW.rvs(size=x0.shape, random_state=check_random_state(random_state))
         if self.dim == 1:
             dx = rvs * self.standard_deviation(x0=x0, dt=dt)
+        elif x0.ndim == 1:
+            # single sample from a joint process
+            dx = rvs @ self.standard_deviation(x0=x0, dt=dt).transpose(1, 0)
         else:
-            if x0.ndim == 1:
-                # single sample from a joint process
-                dx = rvs @ self.standard_deviation(x0=x0, dt=dt).transpose(1, 0)
-            else:
-                # multiple samples from a joint process
-                # we have rvs as a (samples, dimension) array and standard deviation as
-                # a (samples, dimension, dimension) array. We want to matrix multiply
-                # the rvs (dimension) index with the transposed (dimension, dimension)
-                # standard deviation for each sample to get a (samples, dimension) array
-                dx = np.einsum("ab,acb->ac", rvs, self.standard_deviation(x0=x0, dt=dt))
+            # multiple samples from a joint process
+            # we have rvs as a (samples, dimension) array and standard deviation as
+            # a (samples, dimension, dimension) array. We want to matrix multiply
+            # the rvs (dimension) index with the transposed (dimension, dimension)
+            # standard deviation for each sample to get a (samples, dimension) array
+            dx = np.einsum("ab,acb->ac", rvs, self.standard_deviation(x0=x0, dt=dt))
         return self.apply(self.expectation(x0=x0, dt=dt), dx)
 
     # pylint: disable=too-many-arguments

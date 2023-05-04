@@ -85,10 +85,7 @@ class BaseProcessMixin:
 
     def test_single_initial_value_scenario_shape(self):
         """Ensure scenarios from a single start value have the right shape"""
-        if self.model.dim == 1:
-            expected_shape = (50, 31)
-        else:
-            expected_shape = (50, 31, self.model.dim)
+        expected_shape = (50, 31) if self.model.dim == 1 else (50, 31, self.model.dim)
         scenarios = self.model.scenarios(
             x0=self.single_x0, dt=1.0, n_scenarios=50, n_steps=30
         )
